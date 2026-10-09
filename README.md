@@ -15,12 +15,14 @@ e ingesta ejecutadas desde Jenkins. Etapa 4 registrada en el commit aprobado
 `05be1c8` de Julian: agregaciones Spark y pruebas con MongoDB real.
 Etapa 5 registrada en el commit aprobado `6a9a218` de Julian: consultas Flask,
 ocho pruebas aprobadas y comprobaciones HTTP desde Jenkins.
-Etapa 6 en revisión: pipeline con API candidata, despliegue condicionado y
-webhook firmado mediante Cloudflare temporal. Commits aprobados publicados y
-PR de ambos integrantes en borrador. Falta integrar CI/CD en main y comprobar
-el disparo automático de Jenkins por esa integración.
+Etapa 6 integrada: commit CI/CD aprobado `f323777`, PR 1 y 2 integrados en main,
+pipeline con API candidata y despliegue condicionado. El job de producción
+`projectbd` se inició por GitHubPushCause, leyó main y terminó con ocho pruebas
+y despliegue exitosos. El job de desarrollo conserva sus evidencias deshabilitado.
+Etapa 7 en revisión en Andres: entrada Parquet común y mediciones Dask con dos
+y tres workers. Pendiente medición Spark por Julian y comparación final.
 El dataset completo ya se descargó y MongoDB
-contiene una muestra de un millón de registros. El benchmark está pendiente.
+contiene una muestra de un millón de registros. La comparación completa está pendiente.
 El plan y los criterios de aceptación están en [docs/plan.md](docs/plan.md).
 
 ## Arquitectura prevista
@@ -159,7 +161,9 @@ Los parámetros, límites, ejemplos y pruebas se documentan en
 - Ambas ramas comparten la base de ingesta aprobada; Spark y API se desarrollan en `Julian`.
 - Cuenta GitHub de Julian confirmada: `Julianlc324`; su autoría usa `julilc324@gmail.com`.
 - Commits aprobados publicados en GitHub. [PR de Andres](https://github.com/Bjonion/projectBD/pull/1)
-  y [PR de Julian](https://github.com/Bjonion/projectBD/pull/2) creados en borrador.
+  y [PR de Julian](https://github.com/Bjonion/projectBD/pull/2) integrados conservando
+  los originales. Hay tres commits de implementación por integrante;
+  GitHub reconoce las cuentas Bjonion y Julianlc324 mediante sus correos.
 - La integración se realizará mediante pull requests. Julian revisará y trabajará
   en este Mac; se confirmará la autoría antes de cada commit.
 - Cada contribución debe conservar su autor real. No se simularán aportes del otro integrante.

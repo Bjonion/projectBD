@@ -1,0 +1,6 @@
+services:
+  dask-worker-3:
+    extends:
+      file: docker-compose.yml
+      service: dask-worker-1
+    profiles: [benchmark]

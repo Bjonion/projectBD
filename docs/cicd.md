@@ -28,7 +28,8 @@ todos los datos y servicios ni rollback automático posterior al despliegue.
 
 Los reportes de ingesta, Spark, HTTP y el identificador del contenedor desplegado
 se archivan en Jenkins. `disableConcurrentBuilds()` evita concurrencia dentro
-del job; se utiliza un solo job para este entorno Docker.
+del job. El job de producción es `projectbd`; el histórico de desarrollo
+`projectbd-ingestion` queda deshabilitado al configurar producción.
 
 ## Configuración del job
 
@@ -41,6 +42,9 @@ python3 scripts/setup_ingestion_job.py --local-source --run
 Esta opción copia únicamente código permitido y usa temporalmente la definición
 local del Jenkinsfile. No incluye el enunciado, datasets, secretos o la guía
 personal. No acredita checkout ni ejecución automática desde GitHub.
+La validación local usa `projectbd-ingestion`; debe realizarse con producción
+inactiva para que no compitan por el mismo entorno. Al terminar se vuelve a
+configurar el job de producción con el siguiente comando.
 
 Una vez integrado el Jenkinsfile completo en `main`:
 
@@ -49,7 +53,8 @@ python3 scripts/setup_ingestion_job.py --branch main
 python3 scripts/manage_webhook.py start
 ```
 
-Sin `--local-source`, el job usa **Pipeline script from SCM** y carga
+Sin `--local-source`, se configura `projectbd`, se deshabilita el job de
+desarrollo y se usa **Pipeline script from SCM** para cargar
 `Jenkinsfile` desde GitHub. El plugin GitHub tiene su trigger habilitado y el
 Jenkinsfile declara `githubPush()`. No se instala polling periódico como
 sustituto del webhook.
@@ -83,16 +88,15 @@ se conserva fuera del repositorio por solicitud del usuario.
 Los commits aprobados ya se publicaron conservando sus autores:
 
 - [PR 1: Andres → main](https://github.com/Bjonion/projectBD/pull/1): infraestructura e ingesta.
-- [PR 2: Julian → Andres](https://github.com/Bjonion/projectBD/pull/2): Spark y Flask.
+- [PR 2: Julian → main](https://github.com/Bjonion/projectBD/pull/2): Spark, Flask y CI/CD.
 
-Los PR están en borrador. La base inicial del PR de Julian permite revisar su
-aporte separado; después de integrar Andres se cambia su base a `main`.
-Se usará merge que conserve los commits originales. La ampliación CI/CD se
-prepara en Julian y requiere su aprobación antes del commit y publicación.
+Los PR fueron aprobados e integrados. El PR de Julian se revisó inicialmente
+contra Andres; después de integrar Andres se cambió su base a main. Los merges
+conservaron los seis commits originales, tres de Andres y tres de Julian.
+GitHub reconoce ambos autores: Bjonion y Julianlc324.
 
-Para validar completamente el webhook falta integrar el Jenkinsfile final en
-`main`, configurar el job desde SCM y observar que una integración real inicia
-Jenkins. El ping exitoso confirma transporte, no sustituye esa evidencia.
+El Jenkinsfile completo quedó integrado en main. Se verificó el job desde SCM
+y su inicio automático por GitHub, además de los pings de conectividad.
 
 Referencias: [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/syntax/),
 [plugin GitHub](https://plugins.jenkins.io/github/),
@@ -120,6 +124,15 @@ Reporte: [cicd-result.json](cicd-result.json).
   contraseña Jenkins ni secreto del webhook. La guía personal y el enunciado
   no están en el repositorio.
 
-Estas ejecuciones usan el código local revisable. La prueba de checkout desde
-SCM y disparo por integración a `main` sigue pendiente de aprobar el commit
-final de esta etapa y de integrar las contribuciones.
+Después de aprobar el commit CI/CD `f323777`, se publicó y se ejecutó el build 8
+desde SCM Julian: checkout real, ocho pruebas y despliegue SUCCESS. Los PR se
+integraron preservando sus commits.
+
+El primer evento main llegó con 200, pero el job histórico seguía haciendo
+polling sobre el checkout anterior de Julian. Se configuró un job de producción
+separado, `projectbd`, asociado exclusivamente a main y con el trigger de
+GitHub, y se deshabilitó el job de desarrollo. GitHub reenvió su evento real
+de integración: el build 1 de producción se inició con GitHubPushCause,
+leyó el merge `b47622d0bd475033111b83592bdb4c9cb63a0d62`, pasó las ocho
+pruebas y desplegó correctamente. No se creó un commit artificial para activar
+el webhook ni se atribuyó a GitHub una ejecución manual.

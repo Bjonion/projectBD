@@ -20,7 +20,7 @@
     "restart_updates_existing_hook": true,
     "public_admin_paths_status": 404,
     "unsigned_webhook_status": 403,
-    "main_merge_trigger_verified": false
+    "main_merge_trigger_verified": true
   },
   "success_validation": {
     "build": 7,
@@ -46,6 +46,24 @@
         "hotspots": 10
       },
       "spark_run_id": "f652e0dba0fe42dc95488d54afcebcf7"
+    }
+  },
+  "main_pipeline_validation": {
+    "job": "projectbd",
+    "build": 1,
+    "result": "SUCCESS",
+    "cause": "GitHubPushCause",
+    "main_revision": "b47622d0bd475033111b83592bdb4c9cb63a0d62",
+    "delivery": {
+      "delivery_id": 3847238025809494016,
+      "merge_sha": "b47622d0bd475033111b83592bdb4c9cb63a0d62",
+      "redelivered": true
+    },
+    "tests_passed": 8,
+    "duration_seconds": 135.668,
+    "deployment": {
+      "container_id": "ab0f9f157e0d8dc1b120ed8c485a8af7454eec0cb967ada563913082e2fc609a",
+      "image_id": "sha256:074aafbec7586c373024105657bfb231f21aa4072080f4dfb326fdd9c9a8083d"
     }
   }
 }

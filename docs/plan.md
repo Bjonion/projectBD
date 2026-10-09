@@ -21,7 +21,7 @@ no acredita resultados todavía.
 2. Este Mac corresponde a Andres; ramas solicitadas: `Andres` y `Julian`.
 3. Identidades confirmadas: Andres <agomezp@correo.iue.edu.co> y Julian <julilc324@gmail.com>. Cada integrante conserva la autoría de sus propios cambios.
 4. Credencial Kaggle almacenada localmente con acceso restringido y cifrada en Jenkins. El usuario decidió usarla durante el desarrollo y reemplazarla al finalizar.
-5. Autenticación GitHub verificada como Bjonion: permisos admin/push y webhooks. Commits aprobados publicados, PR en borrador y webhook temporal configurado. Falta integrar CI/CD en main y verificar su disparo automático.
+5. Autenticación GitHub verificada como Bjonion: permisos admin/push y webhooks. PR integrados y pipeline de main disparado por GitHub, con resultado SUCCESS. GitHub asocia correctamente los autores con Bjonion y Julianlc324.
 6. Aprobar las instalaciones o descargas de software antes de ejecutarlas.
 
 El usuario aprobó el primer commit, condicionado a verificar los accesos de
@@ -75,14 +75,18 @@ exclusivamente local y no debe incluirse en ningún commit.
   confirmada `Julianlc324`.
 - Etapa 5 registrada en el commit aprobado `6a9a218` de Julian: Jenkins build 5
   exitoso, ocho pruebas aprobadas y consultas HTTP reales.
-- Etapa 6 en revisión en Julian: build 6 falló por una regresión controlada y
+- Etapa 6 registrada en el commit aprobado `f323777` de Julian: build 6 falló por una regresión controlada y
   omitió el despliegue, conservando la API publicada. Build 7 pasó ocho pruebas,
   las comprobaciones HTTP y desplegó la API candidata. Túnel y reinicio probados,
   webhook con ping 200, administración externa bloqueada y firma requerida.
-  Falta aprobar el commit CI/CD, integrar PR y comprobar la ejecución por main.
-- Commits aprobados publicados en GitHub; PR 1 de Andres y PR 2 de Julian en
-  borrador. El PR de Julian parte de Andres para revisar su aporte por separado.
-  Después de integrar Andres se cambiará su base a main.
+  Job de producción projectbd build 1 iniciado por GitHubPushCause, con checkout
+  de main, ocho pruebas y despliegue SUCCESS. Se reutilizó el evento real de
+  integración de GitHub tras separar el historial del job de desarrollo.
+- PR 1 de Andres y PR 2 de Julian integrados en main mediante merge que
+  conserva los seis commits originales, tres de cada integrante.
+- Etapa 7 Dask preparada en Andres: entrada común exportada, dos y tres workers
+  medidos con tiempo y memoria, conteos idénticos y recursos normales restaurados.
+  Pendiente aprobación del commit de Andres y medición Spark por Julian.
 
 ## Distribución del trabajo por integrante
 
