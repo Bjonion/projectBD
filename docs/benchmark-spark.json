@@ -1,0 +1,45 @@
+[
+  {
+    "engine": "spark",
+    "workers": 1,
+    "executors": 1,
+    "cores_per_worker": 1,
+    "executor_memory_limit_bytes": 536870912,
+    "input_rows": 1000000,
+    "input_records_sha256": "69e4e4d7f7cb69e1b591eb74c7d53bc30ba5e9e545f8ba90c2ebbf9f38266b79",
+    "input_partitions": 10,
+    "cell_size_degrees": 0.01,
+    "groups": 175583,
+    "elapsed_seconds": 4.966773,
+    "driver_peak_bytes": 476278784,
+    "output_sha256": "2f66da07fc03b0d20566dc231b7151d69807725500b5a6aee3274169c179f5fd",
+    "equals_dask_grid": true,
+    "worker_peak_bytes": {
+      "spark-worker": 435306496
+    },
+    "sum_worker_peaks_bytes": 435306496,
+    "worker_container_limit_bytes": 1610612736
+  },
+  {
+    "engine": "spark",
+    "workers": 2,
+    "executors": 2,
+    "cores_per_worker": 1,
+    "executor_memory_limit_bytes": 536870912,
+    "input_rows": 1000000,
+    "input_records_sha256": "69e4e4d7f7cb69e1b591eb74c7d53bc30ba5e9e545f8ba90c2ebbf9f38266b79",
+    "input_partitions": 10,
+    "cell_size_degrees": 0.01,
+    "groups": 175583,
+    "elapsed_seconds": 5.230302,
+    "driver_peak_bytes": 463794176,
+    "output_sha256": "2f66da07fc03b0d20566dc231b7151d69807725500b5a6aee3274169c179f5fd",
+    "equals_dask_grid": true,
+    "worker_peak_bytes": {
+      "spark-worker": 428294144,
+      "spark-worker-2": 407609344
+    },
+    "sum_worker_peaks_bytes": 835903488,
+    "worker_container_limit_bytes": 1610612736
+  }
+]

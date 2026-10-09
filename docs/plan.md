@@ -86,13 +86,18 @@ exclusivamente local y no debe incluirse en ningún commit.
   conserva los seis commits originales, tres de cada integrante.
 - Etapa 7 Dask preparada en Andres: entrada común exportada, dos y tres workers
   medidos con tiempo y memoria, conteos idénticos y recursos normales restaurados.
-  Pendiente aprobación del commit de Andres y medición Spark por Julian.
+  Commit aprobado `6db785c` de Andres publicado.
+- Etapa 7 Spark validada en Julian: uno y dos workers, mismos Parquet y conteos
+  idénticos a Dask; tiempos y memoria registrados en docs/benchmark-spark.json.
+  Comparación completa en docs/benchmark.md, pendiente revisión y commit de Julian.
 
 ## Distribución del trabajo por integrante
 
-El usuario pidió mantener equilibrada la carga de commits. Con el commit CI/CD
-aprobado, el trabajo de implementación se distribuye en tres commits de Andres
-(preparación, infraestructura e ingesta) y tres de Julian (Spark, API y CI/CD).
+El usuario pidió mantener equilibrada la carga de commits. Con el benchmark Dask
+aprobado, hay cuatro commits de Andres (preparación, infraestructura, ingesta
+ y benchmark Dask) y tres de Julian (Spark, API y CI/CD). La contribución de
+benchmark Spark preparada para Julian llevará el reparto a cuatro por integrante
+cuando Julian confirme y apruebe su commit.
 Los commits de integración conservarán los originales y no se usarán para
 simular aportes adicionales. En las etapas pendientes, Andres desarrollará la
 medición Dask y Julian la medición Spark; ambos revisarán la comparación y

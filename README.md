@@ -19,10 +19,12 @@ Etapa 6 integrada: commit CI/CD aprobado `f323777`, PR 1 y 2 integrados en main,
 pipeline con API candidata y despliegue condicionado. El job de producción
 `projectbd` se inició por GitHubPushCause, leyó main y terminó con ocho pruebas
 y despliegue exitosos. El job de desarrollo conserva sus evidencias deshabilitado.
-Etapa 7 en revisión en Andres: entrada Parquet común y mediciones Dask con dos
-y tres workers. Pendiente medición Spark por Julian y comparación final.
+Etapa 7 medida: benchmark Dask aprobado en Andres (`6db785c`) con dos y tres
+workers. Spark con uno y dos workers y comparación preparados en Julian,
+pendientes de su revisión y commit. Ambas implementaciones producen los mismos
+conteos sobre un millón de filas: [protocolo y resultados](docs/benchmark.md).
 El dataset completo ya se descargó y MongoDB
-contiene una muestra de un millón de registros. La comparación completa está pendiente.
+contiene una muestra de un millón de registros. El informe técnico final está pendiente.
 El plan y los criterios de aceptación están en [docs/plan.md](docs/plan.md).
 
 ## Arquitectura prevista
@@ -162,7 +164,8 @@ Los parámetros, límites, ejemplos y pruebas se documentan en
 - Cuenta GitHub de Julian confirmada: `Julianlc324`; su autoría usa `julilc324@gmail.com`.
 - Commits aprobados publicados en GitHub. [PR de Andres](https://github.com/Bjonion/projectBD/pull/1)
   y [PR de Julian](https://github.com/Bjonion/projectBD/pull/2) integrados conservando
-  los originales. Hay tres commits de implementación por integrante;
+  los originales. Hay cuatro commits de Andres y tres de Julian; el benchmark Spark pendiente de
+  aprobación equilibrará el reparto a cuatro por integrante;
   GitHub reconoce las cuentas Bjonion y Julianlc324 mediante sus correos.
 - La integración se realizará mediante pull requests. Julian revisará y trabajará
   en este Mac; se confirmará la autoría antes de cada commit.
