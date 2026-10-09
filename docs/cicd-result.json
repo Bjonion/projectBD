@@ -65,5 +65,101 @@
       "container_id": "ab0f9f157e0d8dc1b120ed8c485a8af7454eec0cb967ada563913082e2fc609a",
       "image_id": "sha256:074aafbec7586c373024105657bfb231f21aa4072080f4dfb326fdd9c9a8083d"
     }
-  }
+  },
+  "subsequent_main_integrations": [
+    {
+      "job": "projectbd",
+      "build": 2,
+      "result": "SUCCESS",
+      "main_revision": "a20c4d205d5705028e2ac36df41e5071bd22d8a7",
+      "github_push_cause": true,
+      "tests_passed": 8,
+      "duration_seconds": 150.224,
+      "stages": [
+        "Checkout",
+        "Construcción Dask, Spark y API",
+        "Servicios",
+        "Pytest ingesta",
+        "Pytest Spark",
+        "Pytest API con MongoDB",
+        "Descarga completa Kaggle",
+        "Ingesta Dask y GeoJSON",
+        "Reporte",
+        "Agregaciones Spark",
+        "Pruebas HTTP API",
+        "Despliegue",
+        "Declarative: Post Actions"
+      ],
+      "deployment": {
+        "container_id": "ab0f9f157e0d8dc1b120ed8c485a8af7454eec0cb967ada563913082e2fc609a",
+        "image_id": "sha256:074aafbec7586c373024105657bfb231f21aa4072080f4dfb326fdd9c9a8083d"
+      },
+      "http_smoke": {
+        "health": "ok",
+        "nearby": 10,
+        "within": 10,
+        "nearby_summary_count": 45,
+        "spark_results_returned": {
+          "grid": 10,
+          "hours": 10,
+          "months": 10,
+          "hotspots": 10
+        },
+        "spark_run_id": "3ceb19811be2491da737b980ea62e80c"
+      },
+      "pull_request": 3,
+      "delivery": {
+        "delivery_id": 3847246914638577664,
+        "status_code": 200,
+        "redelivered": false
+      }
+    },
+    {
+      "job": "projectbd",
+      "build": 3,
+      "result": "SUCCESS",
+      "main_revision": "48901ab43c58026280242df3bcfb8e4eb07fe46e",
+      "github_push_cause": true,
+      "tests_passed": 8,
+      "duration_seconds": 134.987,
+      "stages": [
+        "Checkout",
+        "Construcción Dask, Spark y API",
+        "Servicios",
+        "Pytest ingesta",
+        "Pytest Spark",
+        "Pytest API con MongoDB",
+        "Descarga completa Kaggle",
+        "Ingesta Dask y GeoJSON",
+        "Reporte",
+        "Agregaciones Spark",
+        "Pruebas HTTP API",
+        "Despliegue",
+        "Declarative: Post Actions"
+      ],
+      "deployment": {
+        "container_id": "ab0f9f157e0d8dc1b120ed8c485a8af7454eec0cb967ada563913082e2fc609a",
+        "image_id": "sha256:074aafbec7586c373024105657bfb231f21aa4072080f4dfb326fdd9c9a8083d"
+      },
+      "http_smoke": {
+        "health": "ok",
+        "nearby": 1,
+        "within": 1,
+        "nearby_summary_count": 1,
+        "spark_results_returned": {
+          "grid": 10,
+          "hours": 10,
+          "months": 10,
+          "hotspots": 10
+        },
+        "spark_run_id": "168251a0649f456b9ae7de4e155d2891"
+      },
+      "pull_request": 4,
+      "delivery": {
+        "delivery_id": 3847247317174353920,
+        "status_code": 200,
+        "redelivered": false
+      }
+    }
+  ]
 }

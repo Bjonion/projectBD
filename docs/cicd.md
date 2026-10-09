@@ -136,3 +136,25 @@ de integración: el build 1 de producción se inició con GitHubPushCause,
 leyó el merge `b47622d0bd475033111b83592bdb4c9cb63a0d62`, pasó las ocho
 pruebas y desplegó correctamente. No se creó un commit artificial para activar
 el webhook ni se atribuyó a GitHub una ejecución manual.
+
+
+## Integración de comparación y entrega documental
+
+[PR 3](https://github.com/Bjonion/projectBD/pull/3) y
+[PR 4](https://github.com/Bjonion/projectBD/pull/4) integrados en ese orden a main
+mediante merge, preservando los commits de ambos integrantes. El PR 4 se cambió
+de base Andres a main después del PR 3; conservó la contribución de Julian.
+
+- PR 3: merge a20c4d2, entrega GitHub 200 sin reenvío; projectbd build 2,
+  GitHubPushCause, checkout del merge, ocho pytest, smoke HTTP y despliegue
+  SUCCESS (150,224 segundos).
+- PR 4: merge 48901ab, entrega GitHub 200 sin reenvío; projectbd build 3,
+  GitHubPushCause, checkout del merge, ocho pytest, smoke HTTP y despliegue
+  SUCCESS (134,987 segundos).
+
+Estas ejecuciones posteriores confirman el disparo directo del webhook tras
+cada integración, sin repetir el reenvío usado para configurar el job inicial.
+Los reportes de ambas están en `subsequent_main_integrations` de
+[cicd-result.json](cicd-result.json). Flask no cambió, por lo que promover la
+imagen candidata conservó el contenedor publicado; las pruebas HTTP se
+repitieron sobre los nuevos datos y agregaciones de cada ejecución.
