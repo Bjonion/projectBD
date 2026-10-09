@@ -64,9 +64,11 @@ exclusivamente local y no debe incluirse en ningún commit.
   persistencia MongoDB/Jenkins, volumen Dask y conector Spark/MongoDB verificados.
 - MongoDB se ajustó a 7.0 debido a la incompatibilidad de 8.x con el kernel
   7.0.12-linuxkit del Docker de este equipo.
-- No se ha aprobado ni ejecutado el commit de infraestructura.
-- Siguiente etapa: descarga completa de Kaggle desde el pipeline, limpieza
-  particionada Dask y carga de al menos un millón de registros válidos.
+- Etapa 2 registrada en el commit aprobado `7ea6319`, bajo Andres.
+- Etapa 3: Jenkins descargó el dataset completo versión 13; Dask leyó
+  7.728.394 filas y publicó un millón de documentos únicos GeoJSON con índice
+  2dsphere. Código y reporte pendientes de aprobación de commit.
+- Siguiente etapa: procesamiento y agregaciones mediante Spark.
 
 ## Distribución del trabajo por integrante
 
@@ -83,7 +85,8 @@ exclusivamente local y no debe incluirse en ningún commit.
 La distribución concreta sigue siendo una propuesta. La base de infraestructura
 desarrollada en esta sesión corresponde a Andres. No se cambiará la identidad
 Git a Julian para simular aportes: sus commits deberán reflejar su participación
-real. Falta confirmar si trabajará desde su equipo o en una sesión compartida.
+real. El usuario confirmó que Julian trabajará y revisará los cambios en este
+Mac; se confirmará la autoría antes de cada commit, además de su aprobación.
 
 ## Condiciones de la comparación
 

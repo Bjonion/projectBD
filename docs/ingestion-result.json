@@ -1,0 +1,36 @@
+{
+  "source": {
+    "dataset": "sobhanmoosavi/us-accidents",
+    "version": 13,
+    "last_updated": "2023-05-28T00:54:47.207Z",
+    "csv_name": "US_Accidents_March23.csv",
+    "csv_bytes": 3058183727,
+    "zip_bytes": 684855912,
+    "zip_sha256": "849be2b58b796fe4fa3b8857446b967fe96aacb9e7f0d6b709ee18cc9693b3c4",
+    "csv_sha256": "e3e9f962e3e2289db1bdce91623abbcf9ba4d7bfc1adb091c8aeee6c2639d204",
+    "download_extract_seconds": 28.973
+  },
+  "cleaning": {
+    "raw": 7728394,
+    "null_or_nonnumeric_coordinates": 0,
+    "out_of_range_coordinates": 0,
+    "missing_id": 0,
+    "invalid_start_time": 0,
+    "valid": 7728394
+  },
+  "sample_records": 1000000,
+  "sampling": "proportional quotas by valid partition counts; smallest deterministic ID hashes",
+  "hash_key": "projectbd2026key",
+  "blocksize": "8MiB",
+  "partitions": 364,
+  "batch_size": 1000,
+  "batches": 1093,
+  "workers_used": [
+    "tcp://172.20.0.6:34181",
+    "tcp://172.20.0.7:40195"
+  ],
+  "collection": "accidents",
+  "index": "location_2dsphere",
+  "seconds": 59.263,
+  "timestamp_semantics": "source local wall time; timezone retained; not converted to UTC"
+}

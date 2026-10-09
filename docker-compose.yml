@@ -76,6 +76,19 @@ services:
   dask-worker-2:
     <<: *dask-worker
 
+  ingestion:
+    <<: *dask
+    profiles: [jobs]
+    restart: "no"
+    command: [python, -m, ingestion.ingest]
+    mem_limit: 512m
+    cpus: 1
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      dask-scheduler:
+        condition: service_healthy
+
   spark-master:
     <<: *spark
     command: [/opt/spark/bin/spark-class, org.apache.spark.deploy.master.Master, --host, spark-master, --port, "7077", --webui-port, "8080"]

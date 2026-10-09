@@ -9,9 +9,11 @@ Repositorio: https://github.com/Bjonion/projectBD
 Etapa 1 completada localmente: primer commit y ramas `main`, `Andres` y `Julian`.
 Etapa 2 validada: imágenes construidas, ocho contenedores iniciados, workers
 conectados, persistencia comprobada y administrador Jenkins configurado.
-Los cambios de infraestructura están pendientes de aprobación para su commit.
+Infraestructura registrada en el commit aprobado `7ea6319` de la rama Andres.
+Etapa 3: descarga e ingesta ejecutadas desde Jenkins; código pendiente de commit.
 La API tiene únicamente una comprobación de salud; las consultas de la guía
-se implementarán en su etapa. No se ha descargado el dataset ni ejecutado un benchmark.
+se implementarán en su etapa. El dataset completo ya se descargó y MongoDB
+contiene una muestra de un millón de registros. El benchmark está pendiente.
 El plan y los criterios de aceptación están en [docs/plan.md](docs/plan.md).
 
 ## Arquitectura prevista
@@ -95,10 +97,25 @@ Jenkins accede al socket Docker para construir y desplegar; el puerto de su
 interfaz administrativa se publica solamente en localhost. `DOCKER_GID` permite
 ajustar el grupo del socket si el host usa uno distinto del valor inicial 0.
 
-El Jenkinsfile y el webhook se implementarán en la etapa de integración.
+El Jenkinsfile actual cubre descarga e ingesta con pytest. Se ampliará con
+Spark, pruebas API y despliegue en la etapa de integración, junto al webhook.
 Por ahora, MongoDB no se publica en macOS y no lleva autenticación adicional
 en esta red local de desarrollo. La API solo recibe su URI de conexión MongoDB.
-No hay credenciales Kaggle montadas ni configuradas en ninguno de los servicios.
+El token de Kaggle no se configura como variable persistente de ningún
+contenedor ni se monta en los workers, Spark o Flask.
+
+## Descarga e ingesta
+
+La [implementación de ingesta](docs/ingesta.md) explica las reglas de limpieza,
+el muestreo y su ejecución desde Jenkins. Se validó el archivo completo de
+7.728.394 filas y se publicó una muestra distribuida de 1.000.000 documentos en
+`projectbd.accidents`, con puntos GeoJSON e índice `location_2dsphere`.
+
+`ingestion` es un contenedor temporal del perfil `jobs`; utiliza la misma imagen
+y volumen que Dask, pero no se levanta como servicio permanente. La credencial
+se envía por stdin solo durante la descarga. Con servicios y credencial Jenkins
+disponibles, configurar el job con `python3 scripts/setup_ingestion_job.py`.
+El modo `--local-source --run` permite probar código todavía no publicado.
 
 ## Dataset elegido y validado con el docente
 
