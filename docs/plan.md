@@ -89,15 +89,15 @@ exclusivamente local y no debe incluirse en ningún commit.
   Commit aprobado `6db785c` de Andres publicado.
 - Etapa 7 Spark validada en Julian: uno y dos workers, mismos Parquet y conteos
   idénticos a Dask; tiempos y memoria registrados en docs/benchmark-spark.json.
-  Comparación completa en docs/benchmark.md, pendiente revisión y commit de Julian.
+  Comparación completa en docs/benchmark.md; commit aprobado y publicado
+  `5d88a8c` de Julian. Cuatro commits por integrante.
 
 ## Distribución del trabajo por integrante
 
 El usuario pidió mantener equilibrada la carga de commits. Con el benchmark Dask
 aprobado, hay cuatro commits de Andres (preparación, infraestructura, ingesta
  y benchmark Dask) y tres de Julian (Spark, API y CI/CD). La contribución de
-benchmark Spark preparada para Julian llevará el reparto a cuatro por integrante
-cuando Julian confirme y apruebe su commit.
+benchmark Spark aprobada como `5d88a8c` deja cuatro commits por integrante.
 Los commits de integración conservarán los originales y no se usarán para
 simular aportes adicionales. En las etapas pendientes, Andres desarrollará la
 medición Dask y Julian la medición Spark; ambos revisarán la comparación y
@@ -141,3 +141,13 @@ Verificación realizada el 8 de octubre de 2026:
 - No se encontró el archivo convencional ~/.kaggle/kaggle.json.
 - El repositorio remoto no publicó referencias de ramas en la consulta inicial.
 - La actividad indica entrega y sustentación el 9 de octubre de 2026.
+
+## Etapa 8: entrega documental
+
+Informe técnico preparado en Andres: docs/informe-tecnico.md y su PDF de cuatro
+páginas en output/pdf/informe-tecnico.pdf. Incluye arquitectura, decisiones,
+consultas, CI/CD y comparación real; pendiente revisión y aprobación del commit.
+Después Julian completará y verificará el README de instalación desde cero,
+actualizando las instrucciones históricas. Ambos aportes documentales conservarán
+su autoría y aprobación. Los benchmarks ya publicados en las ramas aún deben
+integrarse a main mediante PR. La rotación final del token Kaggle está pendiente.
