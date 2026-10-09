@@ -54,8 +54,8 @@ docker compose exec -T spark-master spark-submit /app/processing/aggregate.py
 
 El último comando imprime `SPARK_RESULT` seguido del reporte JSON. El pipeline
 ejecuta las pruebas Spark antes de la descarga e ingesta y luego procesa la
-muestra; archiva el reporte como `spark-report.json`. Sigue pendiente completar
-las etapas de API, despliegue y webhook de la guía.
+muestra; archiva el reporte como `spark-report.json`. Las etapas de API, despliegue y webhook están implementadas y
+validadas; consultar docs/cicd.md.
 
 Las pruebas incluyen coordenadas negativas y orientación de ejes, agregación
 temporal que separa años, lectura/escritura real del conector, repetición sin
@@ -86,7 +86,7 @@ Spark leyó ocho particiones. El maestro registró la aplicación
 el worker estaba ALIVE con un núcleo ocupado y después la aplicación quedó
 FINISHED. La duración total del trabajo fue 21,857 segundos, incluyendo lectura,
 validaciones, cálculo y escritura. Esta medición no sustituye el benchmark de
-dos configuraciones por motor, que sigue pendiente.
+dos configuraciones por motor, documentado en docs/benchmark.md.
 
 Una consulta independiente a MongoDB confirmó las tres sumas, que los hotspots
 coinciden exactamente con las primeras 20 celdas ordenadas, que las cuatro

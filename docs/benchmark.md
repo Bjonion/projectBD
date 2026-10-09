@@ -84,7 +84,7 @@ Parquet y reportes en `/data/benchmark` del volumen y escribe el resumen en
 `docker-compose.benchmark.yml`; no forma parte del arranque normal.
 
 Los datos de entrada deben conservarse para las mediciones Spark. La medición
-Dask fue aprobada en Andres; Spark se preparó en Julian para su revisión y aprobación.
+Dask fue aprobada en Andres; Spark quedó aprobado en Julian (`5d88a8c`).
 
 ## Spark: resultados reales y comparación
 
@@ -138,5 +138,4 @@ y `/data/benchmark/spark-1.json` y `spark-2.json`; las grillas ordenadas tambié
 se conservan como CSV en el volumen. No se cambian las colecciones publicadas.
 
 La medición Dask quedó aprobada en Andres (`6db785c`). La implementación,
-medición y análisis Spark se prepararon en Julian y esperan su revisión,
-confirmación de autoría y aprobación antes del commit.
+medición y análisis Spark quedaron aprobados en Julian (`5d88a8c`).
