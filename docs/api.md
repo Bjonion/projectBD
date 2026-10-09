@@ -86,4 +86,4 @@ la ejecución de pytest, no las consultas ni el servicio.
 
 El token Kaggle y la contraseña Jenkins no aparecen en el log, el reporte ni
 los archivos publicables. El archivo del enunciado sigue excluido de Git.
-Este commit de API permanece pendiente de revisión y aprobación de Julian.
+El commit de API quedó aprobado y registrado como `6a9a218`, con autoría de Julian.

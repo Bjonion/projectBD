@@ -1,4 +1,4 @@
-// Etapa actual: ingesta, Spark y API. Despliegue y webhook se añaden en CI/CD.
+// La API publicada se reemplaza únicamente después de pytest y smoke tests.
 pipeline {
     agent any
     options {
@@ -6,15 +6,20 @@ pipeline {
         disableConcurrentBuilds()
         timeout(time: 60, unit: 'MINUTES')
     }
+    triggers { githubPush() }
+    environment {
+        API_IMAGE = "projectbd-api:ci-${BUILD_NUMBER}"
+    }
     parameters {
         booleanParam(name: 'CHECKOUT_REPOSITORY', defaultValue: true,
                      description: 'Desactivar solo para validar código local antes del commit aprobado.')
-        string(name: 'GIT_BRANCH', defaultValue: 'Andres', description: 'Rama a validar.')
+        string(name: 'GIT_BRANCH', defaultValue: 'main', description: 'Rama a validar; webhook configurado para main.')
     }
     stages {
         stage('Checkout') {
             when { expression { params.CHECKOUT_REPOSITORY } }
             steps {
+                deleteDir()
                 git branch: params.GIT_BRANCH, url: 'https://github.com/Bjonion/projectBD.git'
             }
         }
@@ -22,7 +27,9 @@ pipeline {
             steps { sh 'docker compose build dask-scheduler spark-master api' }
         }
         stage('Servicios') {
-            steps { sh 'docker compose up -d --wait --wait-timeout 300' }
+            steps {
+                sh 'docker compose up -d --wait --wait-timeout 300 mongodb dask-scheduler dask-worker-1 dask-worker-2 spark-master spark-worker api-validation'
+            }
         }
         stage('Pytest ingesta') {
             steps {
@@ -36,7 +43,7 @@ pipeline {
         }
         stage('Pytest API con MongoDB') {
             steps {
-                sh 'docker compose exec -T api python -m pytest -q -p no:cacheprovider /app/tests/test_api.py'
+                sh 'docker compose exec -T api-validation python -m pytest -q -p no:cacheprovider /app/tests/test_api.py'
             }
         }
         stage('Descarga completa Kaggle') {
@@ -69,10 +76,26 @@ pipeline {
         }
         stage('Pruebas HTTP API') {
             steps {
-                sh 'docker compose exec -T api python /app/scripts/smoke_api.py > api-smoke.log'
+                sh 'docker compose exec -T api-validation python /app/scripts/smoke_api.py > api-smoke.log'
                 sh "sed -n 's/^SMOKE_RESULT //p' api-smoke.log > api-smoke-report.json"
                 archiveArtifacts artifacts: 'api-smoke-report.json', fingerprint: true
             }
+        }
+        stage('Despliegue') {
+            steps {
+                sh '''
+                    docker image tag "$API_IMAGE" projectbd-api:local
+                    API_IMAGE=projectbd-api:local docker compose up -d --no-deps --wait --wait-timeout 120 api
+                    API_IMAGE=projectbd-api:local docker compose exec -T api python /app/scripts/smoke_api.py
+                    docker inspect "$(docker compose ps -q api)" --format '{"container_id":"{{.Id}}","image_id":"{{.Image}}"}' > deployment.json
+                '''
+                archiveArtifacts artifacts: 'deployment.json', fingerprint: true
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker compose rm -sf api-validation'
         }
     }
 }

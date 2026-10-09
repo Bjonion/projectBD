@@ -21,7 +21,7 @@ no acredita resultados todavía.
 2. Este Mac corresponde a Andres; ramas solicitadas: `Andres` y `Julian`.
 3. Identidades confirmadas: Andres <agomezp@correo.iue.edu.co> y Julian <julilc324@gmail.com>. Cada integrante conserva la autoría de sus propios cambios.
 4. Credencial Kaggle almacenada localmente con acceso restringido y cifrada en Jenkins. El usuario decidió usarla durante el desarrollo y reemplazarla al finalizar.
-5. Autenticación GitHub verificada como Bjonion: permisos admin/push y acceso de lectura a la API de webhooks. Todavía no se publicaron cambios ni se creó un webhook.
+5. Autenticación GitHub verificada como Bjonion: permisos admin/push y webhooks. Commits aprobados publicados, PR en borrador y webhook temporal configurado. Falta integrar CI/CD en main y verificar su disparo automático.
 6. Aprobar las instalaciones o descargas de software antes de ejecutarlas.
 
 El usuario aprobó el primer commit, condicionado a verificar los accesos de
@@ -73,13 +73,27 @@ exclusivamente local y no debe incluirse en ningún commit.
   espaciales/temporales publicadas sobre un millón de documentos.
   Commit aprobado `05be1c8`, autor Julian <julilc324@gmail.com>, cuenta GitHub
   confirmada `Julianlc324`.
-- Etapa 5 validada en Julian: Jenkins build 5 exitoso, ocho pruebas aprobadas
-  y consultas HTTP reales sobre la muestra y resultados Spark. El siguiente
-  commit requiere revisión y aprobación propias.
-- Ambas ramas comparten la base aprobada de ingesta; no hay cambios publicados
-  en GitHub. La etapa posterior prevista es completar CI/CD y el webhook.
+- Etapa 5 registrada en el commit aprobado `6a9a218` de Julian: Jenkins build 5
+  exitoso, ocho pruebas aprobadas y consultas HTTP reales.
+- Etapa 6 en revisión en Julian: build 6 falló por una regresión controlada y
+  omitió el despliegue, conservando la API publicada. Build 7 pasó ocho pruebas,
+  las comprobaciones HTTP y desplegó la API candidata. Túnel y reinicio probados,
+  webhook con ping 200, administración externa bloqueada y firma requerida.
+  Falta aprobar el commit CI/CD, integrar PR y comprobar la ejecución por main.
+- Commits aprobados publicados en GitHub; PR 1 de Andres y PR 2 de Julian en
+  borrador. El PR de Julian parte de Andres para revisar su aporte por separado.
+  Después de integrar Andres se cambiará su base a main.
 
 ## Distribución del trabajo por integrante
+
+El usuario pidió mantener equilibrada la carga de commits. Con el commit CI/CD
+aprobado, el trabajo de implementación se distribuye en tres commits de Andres
+(preparación, infraestructura e ingesta) y tres de Julian (Spark, API y CI/CD).
+Los commits de integración conservarán los originales y no se usarán para
+simular aportes adicionales. En las etapas pendientes, Andres desarrollará la
+medición Dask y Julian la medición Spark; ambos revisarán la comparación y
+documentarán su trabajo. Cada nuevo commit seguirá requiriendo aprobación y
+confirmación de autoría.
 
 - El usuario exige participación de ambos integrantes, tanto en infraestructura
   como en el código del proyecto. Cada uno trabajará en su rama y conservará

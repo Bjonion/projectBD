@@ -13,8 +13,12 @@ Infraestructura registrada en el commit aprobado `7ea6319` de la rama Andres.
 Etapa 3 completada en el commit aprobado `16185bb` de Andres: descarga completa
 e ingesta ejecutadas desde Jenkins. Etapa 4 registrada en el commit aprobado
 `05be1c8` de Julian: agregaciones Spark y pruebas con MongoDB real.
-Etapa 5 validada y pendiente de revisión y commit: consultas parametrizadas y
-endpoints de Flask, ocho pruebas aprobadas y comprobaciones HTTP desde Jenkins.
+Etapa 5 registrada en el commit aprobado `6a9a218` de Julian: consultas Flask,
+ocho pruebas aprobadas y comprobaciones HTTP desde Jenkins.
+Etapa 6 en revisión: pipeline con API candidata, despliegue condicionado y
+webhook firmado mediante Cloudflare temporal. Commits aprobados publicados y
+PR de ambos integrantes en borrador. Falta integrar CI/CD en main y comprobar
+el disparo automático de Jenkins por esa integración.
 El dataset completo ya se descargó y MongoDB
 contiene una muestra de un millón de registros. El benchmark está pendiente.
 El plan y los criterios de aceptación están en [docs/plan.md](docs/plan.md).
@@ -154,6 +158,8 @@ Los parámetros, límites, ejemplos y pruebas se documentan en
 - Cada commit requiere aprobación explícita del usuario sobre cambios revisables.
 - Ambas ramas comparten la base de ingesta aprobada; Spark y API se desarrollan en `Julian`.
 - Cuenta GitHub de Julian confirmada: `Julianlc324`; su autoría usa `julilc324@gmail.com`.
+- Commits aprobados publicados en GitHub. [PR de Andres](https://github.com/Bjonion/projectBD/pull/1)
+  y [PR de Julian](https://github.com/Bjonion/projectBD/pull/2) creados en borrador.
 - La integración se realizará mediante pull requests. Julian revisará y trabajará
   en este Mac; se confirmará la autoría antes de cada commit.
 - Cada contribución debe conservar su autor real. No se simularán aportes del otro integrante.
@@ -175,10 +181,12 @@ Los parámetros, límites, ejemplos y pruebas se documentan en
   El pipeline la suministrará únicamente al proceso que descarga los datos.
 - Jenkins: instancia local en Docker, administrador `Andres` configurado.
   Su contraseña local está excluida de Git y no se incluye en las imágenes.
-- Webhook: se propone un túnel temporal de Cloudflare para desarrollo y
-  sustentación. No requiere cuenta ni dominio, pero la URL cambia al reiniciarlo.
-  La configuración pública se limitará al receptor del webhook; la interfaz
-  administrativa se mantendrá local.
+- Webhook: se utiliza un túnel temporal de Cloudflare para desarrollo y
+  sustentación, autorizado y probado. No requiere cuenta ni dominio; la URL
+  cambia al reiniciarlo. `python3 scripts/manage_webhook.py start` inicia el
+  túnel y actualiza GitHub; `restart` lo recrea, `status` muestra las URLs y
+  `stop` cierra el acceso externo. Solo se publica el receptor firmado.
+  Configuración y evidencias en [docs/cicd.md](docs/cicd.md).
 
 La cuenta, el token y las contraseñas se introducen en los servicios o archivos
 locales destinados a secretos, no en mensajes del chat ni archivos versionados.

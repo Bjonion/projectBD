@@ -1,0 +1,51 @@
+{
+  "before_failure": {
+    "container_id": "ab0f9f157e0d8dc1b120ed8c485a8af7454eec0cb967ada563913082e2fc609a",
+    "image_id": "sha256:074aafbec7586c373024105657bfb231f21aa4072080f4dfb326fdd9c9a8083d"
+  },
+  "failure_validation": {
+    "build": 6,
+    "result": "FAILURE",
+    "regression": "radius divided by 1000 in candidate API",
+    "deployment_skipped": true,
+    "production_container_and_image_unchanged": true,
+    "after_failure": {
+      "container_id": "ab0f9f157e0d8dc1b120ed8c485a8af7454eec0cb967ada563913082e2fc609a",
+      "image_id": "sha256:074aafbec7586c373024105657bfb231f21aa4072080f4dfb326fdd9c9a8083d"
+    }
+  },
+  "webhook_validation": {
+    "hook_id": 694461383,
+    "signed_ping_status": 200,
+    "restart_updates_existing_hook": true,
+    "public_admin_paths_status": 404,
+    "unsigned_webhook_status": 403,
+    "main_merge_trigger_verified": false
+  },
+  "success_validation": {
+    "build": 7,
+    "result": "SUCCESS",
+    "tests_passed": 8,
+    "duration_seconds": 127.976,
+    "deployment": {
+      "container_id": "ab0f9f157e0d8dc1b120ed8c485a8af7454eec0cb967ada563913082e2fc609a",
+      "image_id": "sha256:074aafbec7586c373024105657bfb231f21aa4072080f4dfb326fdd9c9a8083d"
+    },
+    "candidate_arm64_manifest": "sha256:066d410ea47e26b45de7449b1b60390ec357eb539f4ad78a262f156a23924734",
+    "api_image_matches_candidate": true,
+    "api_container_recreated": false,
+    "http_smoke": {
+      "health": "ok",
+      "nearby": 10,
+      "within": 6,
+      "nearby_summary_count": 35,
+      "spark_results_returned": {
+        "grid": 10,
+        "hours": 10,
+        "months": 10,
+        "hotspots": 10
+      },
+      "spark_run_id": "f652e0dba0fe42dc95488d54afcebcf7"
+    }
+  }
+}
