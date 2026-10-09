@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && mkdir -p /app /tmp/spark /opt/spark/work \
     && chown -R app:app /app /tmp/spark /opt/spark/work
 COPY docker/spark/spark-defaults.conf /opt/spark/conf/spark-defaults.conf
+COPY benchmark /app/benchmark
 COPY processing /app/processing
 COPY tests /app/tests
 WORKDIR /app

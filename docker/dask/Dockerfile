@@ -6,6 +6,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && useradd --create-home --uid 1000 app \
     && mkdir -p /data && chown app:app /app /data
 COPY ingestion /app/ingestion
+COPY benchmark /app/benchmark
 COPY tests /app/tests
 USER app
 EXPOSE 8786 8787

@@ -1,4 +1,4 @@
-"""Crea el job de ingesta con el Jenkinsfile; permite validar código local sin commit.
+"""Configura producción desde SCM main o el job de validación local del Jenkinsfile.
 
 La opción --local-source copia únicamente archivos de código conocidos al
 workspace Jenkins y omite checkout solo en la ejecución de desarrollo.
@@ -17,7 +17,7 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
-JOB = "projectbd-ingestion"
+DEVELOPMENT_JOB = "projectbd-ingestion"
 
 
 def main():
@@ -26,6 +26,7 @@ def main():
     parser.add_argument("--run", action="store_true")
     parser.add_argument("--branch", default="main")
     args = parser.parse_args()
+    job = DEVELOPMENT_JOB if args.local_source else "projectbd"
     root = Path(__file__).resolve().parents[1]
     password = (root / "secrets/jenkins/admin_password").read_text().strip()
     auth = "Basic " + base64.b64encode(("Andres:" + password).encode()).decode()
@@ -45,7 +46,7 @@ def main():
             return response.read()
 
     if args.local_source:
-        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "processing", "api", "tests", "scripts/smoke_api.py"]
+        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "processing", "benchmark", "api", "tests", "scripts/smoke_api.py"]
         token = (root / "secrets/kaggle/access_token").read_bytes().strip()
         buffer = io.BytesIO()
         with tarfile.open(fileobj=buffer, mode="w") as archive:
@@ -58,13 +59,15 @@ def main():
                             raise RuntimeError("Se detectó un secreto en los archivos de código")
                         archive.add(file, arcname=str(file.relative_to(root)), recursive=False)
         command = ["docker", "compose", "exec", "-T", "jenkins", "sh", "-c",
-                   "mkdir -p /var/jenkins_home/workspace/" + JOB
-                   + " && tar -x -C /var/jenkins_home/workspace/" + JOB]
+                   "mkdir -p /var/jenkins_home/workspace/" + job
+                   + " && tar -x -C /var/jenkins_home/workspace/" + job]
         subprocess.run(command, input=buffer.getvalue(), cwd=root, check=True)
 
     flow = ET.Element("flow-definition", plugin="workflow-job")
     ET.SubElement(flow, "description").text = "Descarga e ingesta de projectBD; código definido en Jenkinsfile."
     properties = ET.SubElement(flow, "properties")
+    project = ET.SubElement(properties, "com.coravy.hudson.plugins.github.GithubProjectProperty", {"plugin": "github"})
+    ET.SubElement(project, "projectUrl").text = "https://github.com/Bjonion/projectBD/"
     definitions = ET.SubElement(ET.SubElement(properties, "hudson.model.ParametersDefinitionProperty"), "parameterDefinitions")
     checkout = ET.SubElement(definitions, "hudson.model.BooleanParameterDefinition")
     ET.SubElement(checkout, "name").text = "CHECKOUT_REPOSITORY"
@@ -91,23 +94,30 @@ def main():
         ET.SubElement(scm, "extensions")
         ET.SubElement(definition, "scriptPath").text = "Jenkinsfile"
         ET.SubElement(definition, "lightweight").text = "true"
-    triggers = ET.SubElement(flow, "triggers")
+    trigger_property = ET.SubElement(properties, "org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty")
+    triggers = ET.SubElement(trigger_property, "triggers")
     trigger = ET.SubElement(triggers, "com.cloudbees.jenkins.GitHubPushTrigger", {"plugin": "github"})
     ET.SubElement(trigger, "spec").text = ""
     ET.SubElement(flow, "disabled").text = "false"
     xml = ET.tostring(flow, encoding="utf-8")
     try:
-        call("/job/" + JOB + "/api/json")
-        endpoint = "/job/" + JOB + "/config.xml"
+        call("/job/" + job + "/api/json")
+        endpoint = "/job/" + job + "/config.xml"
     except urllib.error.HTTPError as error:
         if error.code != 404:
             raise
-        endpoint = "/createItem?name=" + JOB
+        endpoint = "/createItem?name=" + job
     call(endpoint, data=xml, content_type="application/xml; charset=utf-8")
-    print("Job Jenkins configurado:", JOB)
+    if not args.local_source:
+        try:
+            call("/job/" + DEVELOPMENT_JOB + "/disable", data=b"")
+        except urllib.error.HTTPError as error:
+            if error.code != 404:
+                raise
+    print("Job Jenkins configurado:", job)
     if args.run:
         parameters = {"CHECKOUT_REPOSITORY": "false" if args.local_source else "true", "GIT_BRANCH": args.branch}
-        call("/job/" + JOB + "/buildWithParameters", data=urllib.parse.urlencode(parameters).encode(),
+        call("/job/" + job + "/buildWithParameters", data=urllib.parse.urlencode(parameters).encode(),
              content_type="application/x-www-form-urlencoded")
         print("Ejecución solicitada. Fuente:", "código local revisable" if args.local_source else "GitHub")
 

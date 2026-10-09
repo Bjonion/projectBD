@@ -1,0 +1,26 @@
+services:
+  dask-worker-3:
+    extends:
+      file: docker-compose.yml
+      service: dask-worker-1
+    profiles: [benchmark]
+
+  spark-worker-2:
+    extends:
+      file: docker-compose.yml
+      service: spark-worker
+    profiles: [benchmark]
+
+  spark-benchmark:
+    image: projectbd-spark:local
+    profiles: [benchmark]
+    restart: "no"
+    init: true
+    networks: [backend]
+    volumes:
+      - dataset:/data
+    mem_limit: 1g
+    cpus: 1
+    environment:
+      SPARK_LOCAL_DIRS: /tmp/spark
+    entrypoint: [/opt/spark/bin/spark-submit, --conf, spark.driver.host=spark-benchmark]

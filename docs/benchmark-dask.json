@@ -1,0 +1,43 @@
+[
+  {
+    "engine": "dask",
+    "workers": 2,
+    "threads_per_worker": 1,
+    "worker_memory_limit_bytes": 536870912,
+    "input_rows": 1000000,
+    "input_records_sha256": "69e4e4d7f7cb69e1b591eb74c7d53bc30ba5e9e545f8ba90c2ebbf9f38266b79",
+    "input_partitions": 10,
+    "cell_size_degrees": 0.01,
+    "groups": 175583,
+    "elapsed_seconds": 1.011786,
+    "worker_peak_bytes": {
+      "tcp://172.20.0.4:45013": 237584384,
+      "tcp://172.20.0.6:36089": 241729536
+    },
+    "sum_worker_peaks_bytes": 479313920,
+    "driver_peak_bytes": 114380800,
+    "output_sha256": "2f66da07fc03b0d20566dc231b7151d69807725500b5a6aee3274169c179f5fd",
+    "equals_published_spark_grid": true
+  },
+  {
+    "engine": "dask",
+    "workers": 3,
+    "threads_per_worker": 1,
+    "worker_memory_limit_bytes": 536870912,
+    "input_rows": 1000000,
+    "input_records_sha256": "69e4e4d7f7cb69e1b591eb74c7d53bc30ba5e9e545f8ba90c2ebbf9f38266b79",
+    "input_partitions": 10,
+    "cell_size_degrees": 0.01,
+    "groups": 175583,
+    "elapsed_seconds": 0.61747,
+    "worker_peak_bytes": {
+      "tcp://172.20.0.4:34151": 229113856,
+      "tcp://172.20.0.6:38317": 212824064,
+      "tcp://172.20.0.7:46599": 223539200
+    },
+    "sum_worker_peaks_bytes": 665477120,
+    "driver_peak_bytes": 114016256,
+    "output_sha256": "2f66da07fc03b0d20566dc231b7151d69807725500b5a6aee3274169c179f5fd",
+    "equals_published_spark_grid": true
+  }
+]
