@@ -71,9 +71,13 @@ exclusivamente local y no debe incluirse en ningún commit.
 - Etapa 4 validada en Julian: Jenkins build 4 exitoso, cinco pruebas aprobadas
   (tres de ingesta y dos Spark), ocho particiones leídas y agregaciones
   espaciales/temporales publicadas sobre un millón de documentos.
-  Su commit requiere revisión, confirmación de autoría y aprobación.
+  Commit aprobado `05be1c8`, autor Julian <julilc324@gmail.com>, cuenta GitHub
+  confirmada `Julianlc324`.
+- Etapa 5 validada en Julian: Jenkins build 5 exitoso, ocho pruebas aprobadas
+  y consultas HTTP reales sobre la muestra y resultados Spark. El siguiente
+  commit requiere revisión y aprobación propias.
 - Ambas ramas comparten la base aprobada de ingesta; no hay cambios publicados
-  en GitHub. La siguiente etapa prevista es consultas geoespaciales y API.
+  en GitHub. La etapa posterior prevista es completar CI/CD y el webhook.
 
 ## Distribución del trabajo por integrante
 

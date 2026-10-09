@@ -92,4 +92,5 @@ Una consulta independiente a MongoDB confirmó las tres sumas, que los hotspots
 coinciden exactamente con las primeras 20 celdas ordenadas, que las cuatro
 colecciones comparten `run_id` y que no quedan colecciones temporales.
 Se comprobó que el token Kaggle y la contraseña Jenkins no aparecen en el log,
-el reporte ni los archivos publicables. No se ha creado el commit de esta etapa.
+el reporte ni los archivos publicables. La etapa quedó registrada en el commit
+aprobado `05be1c8`, con autoría confirmada de Julian.

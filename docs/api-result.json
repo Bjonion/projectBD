@@ -1,0 +1,13 @@
+{
+  "health": "ok",
+  "nearby": 3,
+  "within": 2,
+  "nearby_summary_count": 3,
+  "spark_results_returned": {
+    "grid": 10,
+    "hours": 10,
+    "months": 10,
+    "hotspots": 10
+  },
+  "spark_run_id": "a0ffdc8396184b5a829ac3341ee1f1eb"
+}

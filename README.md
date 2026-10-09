@@ -11,10 +11,11 @@ Etapa 2 validada: imágenes construidas, ocho contenedores iniciados, workers
 conectados, persistencia comprobada y administrador Jenkins configurado.
 Infraestructura registrada en el commit aprobado `7ea6319` de la rama Andres.
 Etapa 3 completada en el commit aprobado `16185bb` de Andres: descarga completa
-e ingesta ejecutadas desde Jenkins. Etapa 4 validada en la rama Julian y
-pendiente de revisión y commit: agregaciones Spark y pruebas con MongoDB real.
-La API tiene únicamente una comprobación de salud; las consultas de la guía
-se implementarán en su etapa. El dataset completo ya se descargó y MongoDB
+e ingesta ejecutadas desde Jenkins. Etapa 4 registrada en el commit aprobado
+`05be1c8` de Julian: agregaciones Spark y pruebas con MongoDB real.
+Etapa 5 validada y pendiente de revisión y commit: consultas parametrizadas y
+endpoints de Flask, ocho pruebas aprobadas y comprobaciones HTTP desde Jenkins.
+El dataset completo ya se descargó y MongoDB
 contiene una muestra de un millón de registros. El benchmark está pendiente.
 El plan y los criterios de aceptación están en [docs/plan.md](docs/plan.md).
 
@@ -137,6 +138,13 @@ además de las 20 celdas de mayor concentración. Lee la muestra y escribe las
 colecciones de resultados mediante MongoDB Spark Connector. Las reglas,
 pruebas y comandos están en [docs/spark.md](docs/spark.md).
 
+## Consultas y API
+
+Flask expone consultas por radio con `$near`, por polígono con `$geoWithin`,
+un resumen de distancias con `$geoNear` y los resultados calculados por Spark.
+Los parámetros, límites, ejemplos y pruebas se documentan en
+[docs/api.md](docs/api.md).
+
 ## Trabajo en Git
 
 - Rama de integración propuesta: `main`.
@@ -144,7 +152,8 @@ pruebas y comandos están en [docs/spark.md](docs/spark.md).
 - Integrantes: Andres (`agomezp@correo.iue.edu.co`) y Julian (`julilc324@gmail.com`).
 - Este Mac corresponde a Andres; su correo se usará en la configuración Git local.
 - Cada commit requiere aprobación explícita del usuario sobre cambios revisables.
-- Ambas ramas comparten la base de ingesta aprobada; la etapa Spark se prepara en `Julian`.
+- Ambas ramas comparten la base de ingesta aprobada; Spark y API se desarrollan en `Julian`.
+- Cuenta GitHub de Julian confirmada: `Julianlc324`; su autoría usa `julilc324@gmail.com`.
 - La integración se realizará mediante pull requests. Julian revisará y trabajará
   en este Mac; se confirmará la autoría antes de cada commit.
 - Cada contribución debe conservar su autor real. No se simularán aportes del otro integrante.

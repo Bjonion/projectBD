@@ -44,7 +44,7 @@ def main():
             return response.read()
 
     if args.local_source:
-        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "processing", "tests"]
+        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "processing", "api", "tests", "scripts/smoke_api.py"]
         token = (root / "secrets/kaggle/access_token").read_bytes().strip()
         buffer = io.BytesIO()
         with tarfile.open(fileobj=buffer, mode="w") as archive:
