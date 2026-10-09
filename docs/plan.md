@@ -17,10 +17,10 @@ no acredita resultados todavía.
 
 ## Decisiones pendientes
 
-1. Dataset confirmado por el usuario y validado con el docente: `sobhanmoosavi/us-accidents`. Falta verificar acceso de descarga desde el pipeline.
+1. Dataset confirmado y validado con el docente: `sobhanmoosavi/us-accidents`. Descarga completa verificada desde Jenkins.
 2. Este Mac corresponde a Andres; ramas solicitadas: `Andres` y `Julian`.
 3. Identidades confirmadas: Andres <agomezp@correo.iue.edu.co> y Julian <julilc324@gmail.com>. Cada integrante conserva la autoría de sus propios cambios.
-4. Credencial Kaggle proporcionada y almacenada localmente con acceso restringido. El usuario decidió usarla durante el desarrollo y reemplazarla al finalizar; configurarla en Jenkins cuando esté disponible.
+4. Credencial Kaggle almacenada localmente con acceso restringido y cifrada en Jenkins. El usuario decidió usarla durante el desarrollo y reemplazarla al finalizar.
 5. Autenticación GitHub verificada como Bjonion: permisos admin/push y acceso de lectura a la API de webhooks. Todavía no se publicaron cambios ni se creó un webhook.
 6. Aprobar las instalaciones o descargas de software antes de ejecutarlas.
 
@@ -46,8 +46,8 @@ exclusivamente local y no debe incluirse en ningún commit.
   público: esto verifica acceso al archivo, no la identidad del token.
 - Los archivos secretos tienen permisos 600 y sus directorios 700.
 - El usuario decidió posponer la rotación del token hasta el final de la
-  actividad. La integración en Jenkins y el respaldo de su almacén de
-  credenciales siguen pendientes.
+  actividad. La integración en Jenkins se completó; el almacén cifrado persiste
+  en su volumen local. No se ha creado un respaldo externo.
 - El usuario indicó ignorar el avance anterior y desarrollar desde cero.
 - Validación de acceso al dataset y a GitHub completada para el primer commit.
 
@@ -67,8 +67,13 @@ exclusivamente local y no debe incluirse en ningún commit.
 - Etapa 2 registrada en el commit aprobado `7ea6319`, bajo Andres.
 - Etapa 3: Jenkins descargó el dataset completo versión 13; Dask leyó
   7.728.394 filas y publicó un millón de documentos únicos GeoJSON con índice
-  2dsphere. Código y reporte pendientes de aprobación de commit.
-- Siguiente etapa: procesamiento y agregaciones mediante Spark.
+  2dsphere. Código y reporte registrados en el commit aprobado `16185bb` de Andres.
+- Etapa 4 validada en Julian: Jenkins build 4 exitoso, cinco pruebas aprobadas
+  (tres de ingesta y dos Spark), ocho particiones leídas y agregaciones
+  espaciales/temporales publicadas sobre un millón de documentos.
+  Su commit requiere revisión, confirmación de autoría y aprobación.
+- Ambas ramas comparten la base aprobada de ingesta; no hay cambios publicados
+  en GitHub. La siguiente etapa prevista es consultas geoespaciales y API.
 
 ## Distribución del trabajo por integrante
 

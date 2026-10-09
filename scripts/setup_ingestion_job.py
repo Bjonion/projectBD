@@ -44,7 +44,7 @@ def main():
             return response.read()
 
     if args.local_source:
-        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "tests"]
+        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "processing", "tests"]
         token = (root / "secrets/kaggle/access_token").read_bytes().strip()
         buffer = io.BytesIO()
         with tarfile.open(fileobj=buffer, mode="w") as archive:

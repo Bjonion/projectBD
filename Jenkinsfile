@@ -1,4 +1,4 @@
-// Etapa actual: descarga e ingesta. Pruebas/API/despliegue completos se añaden en CI/CD.
+// Etapa actual: ingesta y Spark. API y despliegue completos se añaden en CI/CD.
 pipeline {
     agent any
     options {
@@ -18,8 +18,8 @@ pipeline {
                 git branch: params.GIT_BRANCH, url: 'https://github.com/Bjonion/projectBD.git'
             }
         }
-        stage('Construcción Dask') {
-            steps { sh 'docker compose build dask-scheduler' }
+        stage('Construcción Dask y Spark') {
+            steps { sh 'docker compose build dask-scheduler spark-master' }
         }
         stage('Servicios') {
             steps { sh 'docker compose up -d --wait --wait-timeout 300' }
@@ -27,6 +27,11 @@ pipeline {
         stage('Pytest ingesta') {
             steps {
                 sh 'docker compose run --rm -T --no-deps ingestion python -m pytest -q /app/tests/test_ingestion.py'
+            }
+        }
+        stage('Pytest Spark') {
+            steps {
+                sh 'docker compose exec -T spark-master spark-submit /app/tests/run_spark_tests.py'
             }
         }
         stage('Descarga completa Kaggle') {
@@ -48,6 +53,13 @@ pipeline {
             steps {
                 sh 'docker compose run --rm -T --no-deps ingestion cat /data/reports/ingestion.json > ingestion-report.json'
                 archiveArtifacts artifacts: 'ingestion-report.json', fingerprint: true
+            }
+        }
+        stage('Agregaciones Spark') {
+            steps {
+                sh 'docker compose exec -T spark-master spark-submit /app/processing/aggregate.py > spark-processing.log'
+                sh "sed -n 's/^SPARK_RESULT //p' spark-processing.log > spark-report.json"
+                archiveArtifacts artifacts: 'spark-report.json', fingerprint: true
             }
         }
     }

@@ -10,7 +10,9 @@ Etapa 1 completada localmente: primer commit y ramas `main`, `Andres` y `Julian`
 Etapa 2 validada: imágenes construidas, ocho contenedores iniciados, workers
 conectados, persistencia comprobada y administrador Jenkins configurado.
 Infraestructura registrada en el commit aprobado `7ea6319` de la rama Andres.
-Etapa 3: descarga e ingesta ejecutadas desde Jenkins; código pendiente de commit.
+Etapa 3 completada en el commit aprobado `16185bb` de Andres: descarga completa
+e ingesta ejecutadas desde Jenkins. Etapa 4 validada en la rama Julian y
+pendiente de revisión y commit: agregaciones Spark y pruebas con MongoDB real.
 La API tiene únicamente una comprobación de salud; las consultas de la guía
 se implementarán en su etapa. El dataset completo ya se descargó y MongoDB
 contiene una muestra de un millón de registros. El benchmark está pendiente.
@@ -128,6 +130,13 @@ La propuesta es automatizar la descarga completa y
 procesar una muestra reproducible de al menos un millón de registros válidos.
 Se registrarán versión, conteos, reglas de limpieza y método de muestreo.
 
+## Procesamiento Spark
+
+Spark calcula conteos por grilla de 0,01 grados, por hora local y por año/mes,
+además de las 20 celdas de mayor concentración. Lee la muestra y escribe las
+colecciones de resultados mediante MongoDB Spark Connector. Las reglas,
+pruebas y comandos están en [docs/spark.md](docs/spark.md).
+
 ## Trabajo en Git
 
 - Rama de integración propuesta: `main`.
@@ -135,8 +144,9 @@ Se registrarán versión, conteos, reglas de limpieza y método de muestreo.
 - Integrantes: Andres (`agomezp@correo.iue.edu.co`) y Julian (`julilc324@gmail.com`).
 - Este Mac corresponde a Andres; su correo se usará en la configuración Git local.
 - Cada commit requiere aprobación explícita del usuario sobre cambios revisables.
-- Las dos ramas se crearon desde el primer commit aprobado; este Mac trabaja en `Andres`.
-- La integración se realizará mediante pull requests; falta acordar la asignación de tareas.
+- Ambas ramas comparten la base de ingesta aprobada; la etapa Spark se prepara en `Julian`.
+- La integración se realizará mediante pull requests. Julian revisará y trabajará
+  en este Mac; se confirmará la autoría antes de cada commit.
 - Cada contribución debe conservar su autor real. No se simularán aportes del otro integrante.
 - Ambos integrantes deben participar en infraestructura y código. La distribución
   propuesta y las condiciones de autoría están en [docs/plan.md](docs/plan.md).
