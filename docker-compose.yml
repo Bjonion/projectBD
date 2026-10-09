@@ -1,0 +1,174 @@
+name: projectbd
+
+x-dask: &dask
+  image: projectbd-dask:local
+  build:
+    context: .
+    dockerfile: docker/dask/Dockerfile
+  restart: unless-stopped
+  init: true
+  networks: [backend]
+  volumes:
+    - dataset:/data
+  environment:
+    PYTHONUNBUFFERED: "1"
+    MONGODB_URI: mongodb://mongodb:27017/projectbd
+    DASK_SCHEDULER_ADDRESS: tcp://dask-scheduler:8786
+
+x-dask-worker: &dask-worker
+  <<: *dask
+  command: [dask, worker, tcp://dask-scheduler:8786, --nworkers, "1", --nthreads, "1", --memory-limit, 512MiB, --local-directory, /tmp/dask, --no-dashboard]
+  mem_limit: 768m
+  cpus: 1
+  depends_on:
+    dask-scheduler:
+      condition: service_healthy
+
+x-spark: &spark
+  image: projectbd-spark:local
+  build:
+    context: .
+    dockerfile: docker/spark/Dockerfile
+  restart: unless-stopped
+  init: true
+  networks: [backend]
+  environment:
+    PYTHONUNBUFFERED: "1"
+    MONGODB_URI: mongodb://mongodb:27017/projectbd
+    SPARK_LOCAL_DIRS: /tmp/spark
+  volumes:
+    - dataset:/data:ro
+
+services:
+  mongodb:
+    image: mongo:7.0@sha256:1f995ad6fdb93244a1addab1b58f934a0bc2f5643c38e02f5e9d7f0c7d227a7b
+    command: [mongod, --bind_ip_all, --wiredTigerCacheSizeGB, "0.25"]
+    restart: unless-stopped
+    networks: [backend]
+    volumes:
+      - mongodb_data:/data/db
+    mem_limit: 1g
+    cpus: 1
+    healthcheck:
+      test: [CMD, mongosh, --quiet, --eval, "quit(db.adminCommand({ping:1}).ok ? 0 : 1)"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  dask-scheduler:
+    <<: *dask
+    command: [dask, scheduler, --host, 0.0.0.0, --port, "8786", --dashboard-address, ":8787"]
+    ports:
+      - "127.0.0.1:8787:8787"
+    mem_limit: 384m
+    cpus: 1
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8787/health', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+
+  dask-worker-1:
+    <<: *dask-worker
+
+  dask-worker-2:
+    <<: *dask-worker
+
+  spark-master:
+    <<: *spark
+    command: [/opt/spark/bin/spark-class, org.apache.spark.deploy.master.Master, --host, spark-master, --port, "7077", --webui-port, "8080"]
+    ports:
+      - "127.0.0.1:8081:8080"
+    mem_limit: 1g
+    cpus: 1
+    environment:
+      PYTHONUNBUFFERED: "1"
+      MONGODB_URI: mongodb://mongodb:27017/projectbd
+      SPARK_LOCAL_DIRS: /tmp/spark
+      SPARK_DAEMON_MEMORY: 256m
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/json/', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  spark-worker:
+    <<: *spark
+    command: [/opt/spark/bin/spark-class, org.apache.spark.deploy.worker.Worker, --cores, "1", --memory, 1g, --webui-port, "8081", spark://spark-master:7077]
+    mem_limit: 1536m
+    cpus: 1
+    environment:
+      PYTHONUNBUFFERED: "1"
+      MONGODB_URI: mongodb://mongodb:27017/projectbd
+      SPARK_LOCAL_DIRS: /tmp/spark
+      SPARK_DAEMON_MEMORY: 256m
+    depends_on:
+      spark-master:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/json/', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  api:
+    image: projectbd-api:local
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    restart: unless-stopped
+    init: true
+    networks: [backend]
+    environment:
+      PYTHONUNBUFFERED: "1"
+      MONGODB_URI: mongodb://mongodb:27017/projectbd
+    ports:
+      - "127.0.0.1:5000:5000"
+    mem_limit: 256m
+    cpus: 1
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+
+  jenkins:
+    image: projectbd-jenkins:local
+    build:
+      context: .
+      dockerfile: docker/jenkins/Dockerfile
+    restart: unless-stopped
+    networks: [backend]
+    group_add: ["${DOCKER_GID:-0}"]
+    environment:
+      JAVA_OPTS: -Xms256m -Xmx768m
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    mem_limit: 1536m
+    cpus: 2
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --output, /dev/null, http://127.0.0.1:8080/login]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 90s
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  dataset:
+  jenkins_home:

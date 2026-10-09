@@ -1,0 +1,4 @@
+workflow-aggregator
+git
+github
+credentials-binding
