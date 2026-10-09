@@ -255,8 +255,14 @@ individuales y cada commit requiere revisión y aprobación. Los
 [PR 2](https://github.com/Bjonion/projectBD/pull/2) conservaron los commits
 originales mediante merge. Andres aporta infraestructura MongoDB/Dask, ingesta,
 benchmark Dask e informe; Julian aporta Spark, Flask, Jenkins/webhook, benchmark
-Spark y documentación de reproducción. Las contribuciones finales todavía
-requieren integración a main. La rotación final del token Kaggle está pendiente.
+Spark y documentación de reproducción. Los
+[PR 3](https://github.com/Bjonion/projectBD/pull/3) y
+[PR 4](https://github.com/Bjonion/projectBD/pull/4) integraron benchmarks, informe
+y reproducción a main, conservando los cinco commits originales por integrante.
+Los builds 2 y 3 de producción se iniciaron directamente por GitHub, pasaron
+ocho pruebas cada uno y desplegaron correctamente. La credencial Kaggle
+se administra en Jenkins y se excluye de Git; puede reemplazarse en ese almacén
+sin modificar el código.
 El enunciado y los secretos se excluyen de Git y del contexto de construcción.
 
 - [Informe técnico PDF](output/pdf/informe-tecnico.pdf)

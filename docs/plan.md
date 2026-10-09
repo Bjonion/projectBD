@@ -148,16 +148,26 @@ decisiones, consultas, CI/CD y comparación real.
 Julian preparó el README de instalación desde cero y actualizó instrucciones
 históricas. También corrigió los runners de benchmark para admitir una
 instalación sin el job histórico de desarrollo (404), manteniendo obligatorio
-el job de producción y el bloqueo frente a ejecuciones activas. Pendiente
-confirmación de autoría y aprobación del commit de Julian; llevará el reparto
-a cinco commits por integrante. Ambos aportes documentales conservarán
-su autoría y aprobación. Los benchmarks ya publicados en las ramas aún deben
-integrarse a main mediante PR. La rotación final del token Kaggle está pendiente.
+el job de producción y el bloqueo frente a ejecuciones activas. Commit de
+Julian aprobado y publicado como `897de01`, con autoría confirmada. Los aportes
+documentales conservaron sus autores y aprobaciones. Los benchmarks publicados en las ramas
+quedaron integrados a main mediante PR 3 y 4. El token actual se conserva para el ejercicio; la rotación
+es una recomendación, no un requisito de entrega.
 
 Verificación del README: Compose normal y benchmark aceptados desde una copia
 limpia sin secretos; ocho pytest aprobados en el entorno existente y smoke HTTP
 correcto. Jenkins reutiliza el administrador. Los dos runners aceptan un job
 histórico ausente y bloquean producción en cola. No se ejecutó una instalación
 completa con volúmenes nuevos ni en otro equipo. Evidencia en
- docs/reproduccion-result.json. Pendientes: aprobar y publicar Julian, integrar
-los cambios finales por PR y reemplazar el token Kaggle al cierre.
+ docs/reproduccion-result.json. Julian quedó aprobado y publicado como `897de01`. PR 3 y 4 integrados; los builds
+2 y 3 de producción terminaron SUCCESS, ocho pruebas y despliegue, con disparo
+directo de GitHub sin reenvío. Cinco commits originales por integrante.
+El token Kaggle actual se conserva protegido y no bloquea la entrega; su
+reemplazo no es un requisito funcional ni de la guía.
+
+
+Cierre documental revisado y aprobado por ambos integrantes: Andres actualiza
+el informe y la evidencia CI/CD; Julian actualiza README y este plan para
+retirar pendientes resueltos. El reparto incluye seis aportes por integrante,
+con sus autores originales. El token actual se conserva protegido para el
+ejercicio; reemplazarlo no es una condición de entrega.
