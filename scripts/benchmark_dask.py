@@ -3,6 +3,7 @@ import base64
 import json
 from pathlib import Path
 import subprocess
+import urllib.error
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,8 +20,14 @@ def main():
     auth = "Basic " + base64.b64encode(("Andres:" + password).encode()).decode()
     for job in ["projectbd", "projectbd-ingestion"]:
         request = urllib.request.Request(f"http://127.0.0.1:8080/job/{job}/api/json", headers={"Authorization": auth})
-        with urllib.request.urlopen(request, timeout=10) as response:
-            status = json.load(response)
+        try:
+            with urllib.request.urlopen(request, timeout=10) as response:
+                status = json.load(response)
+        except urllib.error.HTTPError as error:
+            # En una instalación nueva puede no existir el job histórico.
+            if job == "projectbd-ingestion" and error.code == 404:
+                continue
+            raise
         if status["inQueue"]:
             raise RuntimeError("Hay un pipeline en cola")
         if status["lastBuild"]:

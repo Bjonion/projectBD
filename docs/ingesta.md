@@ -5,7 +5,8 @@
 El Jenkinsfile actual construye la imagen Dask, levanta los servicios, ejecuta
 pytest, descarga el dataset completo mediante la API de Kaggle y carga una
 muestra de un millón de registros. Si pytest falla, no ejecuta la descarga ni
-la ingesta. Las etapas de Spark, API y despliegue continuo aún están pendientes.
+la ingesta. El pipeline completo también ejecuta Spark, pruebas API y despliegue
+condicionado; su configuración actual está en README y docs/cicd.md.
 
 La credencial Secret text `kaggle-api-token` se obtiene del almacén Jenkins.
 El shell desactiva la impresión de comandos antes de enviarla por stdin al
@@ -72,8 +73,9 @@ Con infraestructura y administrador Jenkins configurados según README:
 python3 scripts/setup_ingestion_job.py
 ```
 
-El job `projectbd-ingestion` recibe el contenido versionado de Jenkinsfile.
-Su modo normal realiza checkout de la rama configurada. Para validar cambios
+El job de producción `projectbd` carga Jenkinsfile desde GitHub y realiza
+checkout de la rama main. `projectbd-ingestion` conserva el histórico de
+validación local y solo se utiliza con `--local-source`. Para validar cambios
 locales antes de un commit aprobado, sin publicar nada en GitHub:
 
 ```sh
@@ -84,7 +86,7 @@ Este modo copia exclusivamente código conocido al workspace Jenkins, excluye
 secretos y el enunciado, y omite el checkout en esa ejecución. Fue el modo
 utilizado para la validación de esta etapa porque el código aún requiere
 aprobación del usuario antes de hacer commit/publicarlo. El webhook y la
-lectura automática del Jenkinsfile desde GitHub se completarán en CI/CD.
+lectura automática del Jenkinsfile desde GitHub ya se validaron en CI/CD.
 
 Pruebas independientes, con los servicios iniciados y la imagen actualizada:
 
@@ -111,8 +113,8 @@ temporales propias que se eliminan al terminar.
   un millón de registros. Tres casos pytest pasaron, incluyendo la prueba de
   conservación de la colección anterior ante IDs duplicados.
 - Ingesta de la ejecución 3: 59,263 segundos. Se comprobaron consultas $near
-  y $geoNear sobre un punto real de la muestra; su exposición en Flask queda
-  pendiente de la etapa de API.
+  y $geoNear sobre un punto real de la muestra; su exposición en Flask se validó
+  posteriormente en la etapa de API.
 
 El [reporte JSON generado por Jenkins](ingestion-result.json) conserva hashes,
 conteos y tiempos medidos. Estas duraciones describen la ingesta y todavía no

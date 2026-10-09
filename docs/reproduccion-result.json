@@ -1,0 +1,53 @@
+{
+  "scope": "Comandos de README y configuración limpia; runtime de pruebas usa los volúmenes existentes",
+  "clean_copy": {
+    "secrets_present": false,
+    "assignment_present": false,
+    "compose_base_valid": true,
+    "compose_benchmark_valid": true,
+    "full_fresh_volume_boot_performed": false,
+    "other_host_tested": false
+  },
+  "jenkins_setup": {
+    "existing_admin_verified": true,
+    "password_preserved": true
+  },
+  "pytest": {
+    "ingestion": {
+      "passed": 3,
+      "seconds": 4.96
+    },
+    "spark": {
+      "passed": 2,
+      "seconds": 32.38
+    },
+    "api": {
+      "passed": 3,
+      "seconds": 0.7
+    },
+    "total_passed": 8
+  },
+  "http_smoke": {
+    "health": "ok",
+    "nearby": 2,
+    "within": 2,
+    "nearby_summary_count": 2,
+    "spark_results_returned": {
+      "grid": 10,
+      "hours": 10,
+      "months": 10,
+      "hotspots": 10
+    },
+    "spark_run_id": "892b493efe9840319bbe5702a510e6b5"
+  },
+  "benchmark_preflight": {
+    "engines": [
+      "dask",
+      "spark"
+    ],
+    "live_production_idle_verified": true,
+    "missing_history_job_404_accepted": true,
+    "queued_production_blocks_benchmark": true,
+    "measurements_rerun": false
+  }
+}

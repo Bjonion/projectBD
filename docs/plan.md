@@ -53,8 +53,8 @@ exclusivamente local y no debe incluirse en ningún commit.
 
 ## Etapas completadas y pendientes
 
-- Etapa 1: commit local `ed5e16e`, ramas main/Andres/Julian creadas, identidad
-  de Andres configurada. No se ha realizado push a GitHub.
+- Etapa 1: commit `ed5e16e`, ramas main/Andres/Julian creadas e identidad
+  de Andres configurada. Los commits aprobados se publicaron en GitHub.
 - Etapa 2 validada: ocho servicios ejecutándose, límites por contenedor y
   puertos de host restringidos a localhost. Flask dispone de /health con ping
   real a MongoDB; no tiene todavía consultas. Jenkins tiene administrador y
@@ -94,15 +94,13 @@ exclusivamente local y no debe incluirse en ningún commit.
 
 ## Distribución del trabajo por integrante
 
-El usuario pidió mantener equilibrada la carga de commits. Con el benchmark Dask
-aprobado, hay cuatro commits de Andres (preparación, infraestructura, ingesta
- y benchmark Dask) y tres de Julian (Spark, API y CI/CD). La contribución de
-benchmark Spark aprobada como `5d88a8c` deja cuatro commits por integrante.
-Los commits de integración conservarán los originales y no se usarán para
-simular aportes adicionales. En las etapas pendientes, Andres desarrollará la
-medición Dask y Julian la medición Spark; ambos revisarán la comparación y
-documentarán su trabajo. Cada nuevo commit seguirá requiriendo aprobación y
-confirmación de autoría.
+El usuario pidió mantener equilibrada la carga de commits. Con el informe
+aprobado `b4a3b11`, Andres tiene cinco commits de implementación/documentación
+y Julian cuatro. La documentación de reproducción preparada en Julian dejará
+cinco por integrante cuando él confirme y apruebe su commit. Los commits de
+integración conservarán los originales; no se contarán como aportes adicionales.
+Ambos benchmarks están publicados y el informe fue revisado por el usuario.
+Cada nuevo commit sigue requiriendo aprobación y confirmación de autoría.
 
 - El usuario exige participación de ambos integrantes, tanto en infraestructura
   como en el código del proyecto. Cada uno trabajará en su rama y conservará
@@ -144,10 +142,22 @@ Verificación realizada el 8 de octubre de 2026:
 
 ## Etapa 8: entrega documental
 
-Informe técnico preparado en Andres: docs/informe-tecnico.md y su PDF de cuatro
-páginas en output/pdf/informe-tecnico.pdf. Incluye arquitectura, decisiones,
-consultas, CI/CD y comparación real; pendiente revisión y aprobación del commit.
-Después Julian completará y verificará el README de instalación desde cero,
-actualizando las instrucciones históricas. Ambos aportes documentales conservarán
+Informe técnico aprobado y publicado por Andres (`b4a3b11`): docs/informe-tecnico.md
+y PDF de cuatro páginas en output/pdf/informe-tecnico.pdf. Incluye arquitectura,
+decisiones, consultas, CI/CD y comparación real.
+Julian preparó el README de instalación desde cero y actualizó instrucciones
+históricas. También corrigió los runners de benchmark para admitir una
+instalación sin el job histórico de desarrollo (404), manteniendo obligatorio
+el job de producción y el bloqueo frente a ejecuciones activas. Pendiente
+confirmación de autoría y aprobación del commit de Julian; llevará el reparto
+a cinco commits por integrante. Ambos aportes documentales conservarán
 su autoría y aprobación. Los benchmarks ya publicados en las ramas aún deben
 integrarse a main mediante PR. La rotación final del token Kaggle está pendiente.
+
+Verificación del README: Compose normal y benchmark aceptados desde una copia
+limpia sin secretos; ocho pytest aprobados en el entorno existente y smoke HTTP
+correcto. Jenkins reutiliza el administrador. Los dos runners aceptan un job
+histórico ausente y bloquean producción en cola. No se ejecutó una instalación
+completa con volúmenes nuevos ni en otro equipo. Evidencia en
+ docs/reproduccion-result.json. Pendientes: aprobar y publicar Julian, integrar
+los cambios finales por PR y reemplazar el token Kaggle al cierre.
