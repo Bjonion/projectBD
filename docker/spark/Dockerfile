@@ -2,7 +2,7 @@ FROM python:3.11-slim-bookworm@sha256:0a310eeecf4e1f5a0743f9a6520c90c88d089c903c
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     JAVA_HOME=/usr/lib/jvm/java-17-openjdk \
     SPARK_HOME=/opt/spark \
-    PATH=/opt/spark/bin:$PATH
+    PATH=/opt/spark/bin:$PATH PYTHONPATH=/app
 USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openjdk-17-jre-headless \
@@ -15,6 +15,8 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && mkdir -p /app /tmp/spark /opt/spark/work \
     && chown -R app:app /app /tmp/spark /opt/spark/work
 COPY docker/spark/spark-defaults.conf /opt/spark/conf/spark-defaults.conf
+COPY processing /app/processing
+COPY tests /app/tests
 WORKDIR /app
 USER app
 EXPOSE 7077 8080 8081

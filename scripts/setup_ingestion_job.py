@@ -24,6 +24,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--local-source", action="store_true")
     parser.add_argument("--run", action="store_true")
+    parser.add_argument("--branch", default="main")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     password = (root / "secrets/jenkins/admin_password").read_text().strip()
@@ -44,7 +45,7 @@ def main():
             return response.read()
 
     if args.local_source:
-        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "tests"]
+        allowed = [".dockerignore", "docker-compose.yml", "Jenkinsfile", "docker", "ingestion", "processing", "api", "tests", "scripts/smoke_api.py"]
         token = (root / "secrets/kaggle/access_token").read_bytes().strip()
         buffer = io.BytesIO()
         with tarfile.open(fileobj=buffer, mode="w") as archive:
@@ -70,10 +71,29 @@ def main():
     ET.SubElement(checkout, "defaultValue").text = "true"
     branch = ET.SubElement(definitions, "hudson.model.StringParameterDefinition")
     ET.SubElement(branch, "name").text = "GIT_BRANCH"
-    ET.SubElement(branch, "defaultValue").text = "Andres"
-    definition = ET.SubElement(flow, "definition", {"class": "org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition", "plugin": "workflow-cps"})
-    ET.SubElement(definition, "script").text = (root / "Jenkinsfile").read_text()
-    ET.SubElement(definition, "sandbox").text = "true"
+    ET.SubElement(branch, "defaultValue").text = args.branch
+    if args.local_source:
+        definition = ET.SubElement(flow, "definition", {"class": "org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition", "plugin": "workflow-cps"})
+        ET.SubElement(definition, "script").text = (root / "Jenkinsfile").read_text()
+        ET.SubElement(definition, "sandbox").text = "true"
+    else:
+        definition = ET.SubElement(flow, "definition", {"class": "org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition", "plugin": "workflow-cps"})
+        scm = ET.SubElement(definition, "scm", {"class": "hudson.plugins.git.GitSCM", "plugin": "git"})
+        ET.SubElement(scm, "configVersion").text = "2"
+        remotes = ET.SubElement(scm, "userRemoteConfigs")
+        remote = ET.SubElement(remotes, "hudson.plugins.git.UserRemoteConfig")
+        ET.SubElement(remote, "url").text = "https://github.com/Bjonion/projectBD.git"
+        branches = ET.SubElement(scm, "branches")
+        spec = ET.SubElement(branches, "hudson.plugins.git.BranchSpec")
+        ET.SubElement(spec, "name").text = "*/" + args.branch
+        ET.SubElement(scm, "doGenerateSubmoduleConfigurations").text = "false"
+        ET.SubElement(scm, "submoduleCfg", {"class": "empty-list"})
+        ET.SubElement(scm, "extensions")
+        ET.SubElement(definition, "scriptPath").text = "Jenkinsfile"
+        ET.SubElement(definition, "lightweight").text = "true"
+    triggers = ET.SubElement(flow, "triggers")
+    trigger = ET.SubElement(triggers, "com.cloudbees.jenkins.GitHubPushTrigger", {"plugin": "github"})
+    ET.SubElement(trigger, "spec").text = ""
     ET.SubElement(flow, "disabled").text = "false"
     xml = ET.tostring(flow, encoding="utf-8")
     try:
@@ -86,7 +106,7 @@ def main():
     call(endpoint, data=xml, content_type="application/xml; charset=utf-8")
     print("Job Jenkins configurado:", JOB)
     if args.run:
-        parameters = {"CHECKOUT_REPOSITORY": "false" if args.local_source else "true", "GIT_BRANCH": "Andres"}
+        parameters = {"CHECKOUT_REPOSITORY": "false" if args.local_source else "true", "GIT_BRANCH": args.branch}
         call("/job/" + JOB + "/buildWithParameters", data=urllib.parse.urlencode(parameters).encode(),
              content_type="application/x-www-form-urlencoded")
         print("Ejecución solicitada. Fuente:", "código local revisable" if args.local_source else "GitHub")

@@ -1,0 +1,17 @@
+{
+  "run_id": "06602404f3a84aab8c61359870c24a85",
+  "source_collection": "accidents",
+  "input_rows": 1000000,
+  "input_partitions": 8,
+  "cell_size_degrees": 0.01,
+  "time_basis": "hora local del registro",
+  "spark_master": "spark://spark-master:7077",
+  "collections": {
+    "spark_grid": 175583,
+    "spark_hours": 24,
+    "spark_months": 86,
+    "spark_hotspots": 20
+  },
+  "elapsed_seconds": 21.857,
+  "spark_version": "3.5.8"
+}
