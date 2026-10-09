@@ -1,0 +1,38 @@
+# Sistema y herramientas
+.DS_Store
+# Enunciado local: el usuario exige que nunca se publique
+Actividad_bigdata.md
+Actividad_bigdata.MD
+actividad Big Data.md
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Credenciales y configuración local
+.env
+.env.*
+!.env.example
+kaggle.json
+.kaggle/
+access_token
+secrets/
+*.pem
+*.key
+
+# Datos y volúmenes: se generan mediante el pipeline
+data/
+volumes/
+jenkins_home/
+*.csv
+*.parquet
+*.zip
+*.log
+
+# Resultados brutos; las mediciones finales revisadas irán en docs/
+artifacts/
