@@ -20,7 +20,7 @@ no acredita resultados todavía.
 1. Dataset confirmado por el usuario y validado con el docente: `sobhanmoosavi/us-accidents`. Falta verificar acceso de descarga desde el pipeline.
 2. Este Mac corresponde a Andres; ramas solicitadas: `Andres` y `Julian`.
 3. Identidades confirmadas: Andres <agomezp@correo.iue.edu.co> y Julian <julilc324@gmail.com>. Cada integrante conserva la autoría de sus propios cambios.
-4. Credencial Kaggle proporcionada y almacenada localmente con acceso restringido. Rotarla por haber sido compartida en el chat y configurarla en Jenkins cuando esté disponible.
+4. Credencial Kaggle proporcionada y almacenada localmente con acceso restringido. El usuario decidió usarla durante el desarrollo y reemplazarla al finalizar; configurarla en Jenkins cuando esté disponible.
 5. Autenticación GitHub verificada como Bjonion: permisos admin/push y acceso de lectura a la API de webhooks. Todavía no se publicaron cambios ni se creó un webhook.
 6. Aprobar las instalaciones o descargas de software antes de ejecutarlas.
 
@@ -45,20 +45,48 @@ exclusivamente local y no debe incluirse en ningún commit.
   y se verificó la firma ZIP con solo cuatro bytes leídos. El endpoint es
   público: esto verifica acceso al archivo, no la identidad del token.
 - Los archivos secretos tienen permisos 600 y sus directorios 700.
-- El token debe rotarse por haberse compartido en el chat. La integración en
-  Jenkins y el cifrado/respaldo del almacén de credenciales siguen pendientes.
-- No existe un contenedor dask-scheduler en este Docker ni un script ingest.py
-  en la carpeta actual. El avance anterior debe localizarse antes de reutilizarlo.
+- El usuario decidió posponer la rotación del token hasta el final de la
+  actividad. La integración en Jenkins y el respaldo de su almacén de
+  credenciales siguen pendientes.
+- El usuario indicó ignorar el avance anterior y desarrollar desde cero.
 - Validación de acceso al dataset y a GitHub completada para el primer commit.
 
-## Propuesta de trabajo por integrante, pendiente de acuerdo
+## Etapas completadas y pendientes
 
-- Andres: ingesta Dask, limpieza, muestreo e instrumentación de Dask.
-- Julian: procesamiento Spark, consultas/API e instrumentación de Spark.
-- Trabajo compartido: Compose, Jenkins, integración, validación y documentación.
+- Etapa 1: commit local `ed5e16e`, ramas main/Andres/Julian creadas, identidad
+  de Andres configurada. No se ha realizado push a GitHub.
+- Etapa 2 validada: ocho servicios ejecutándose, límites por contenedor y
+  puertos de host restringidos a localhost. Flask dispone de /health con ping
+  real a MongoDB; no tiene todavía consultas. Jenkins tiene administrador y
+  credencial Kaggle cifrada configurados.
+- Imágenes base verificadas mediante metadatos del registro: soporte ARM64.
+- Descarga/construcción autorizadas y ejecutadas. Salud, registro de workers,
+  persistencia MongoDB/Jenkins, volumen Dask y conector Spark/MongoDB verificados.
+- MongoDB se ajustó a 7.0 debido a la incompatibilidad de 8.x con el kernel
+  7.0.12-linuxkit del Docker de este equipo.
+- Etapa 2 registrada en el commit aprobado `7ea6319`, bajo Andres.
+- Etapa 3: Jenkins descargó el dataset completo versión 13; Dask leyó
+  7.728.394 filas y publicó un millón de documentos únicos GeoJSON con índice
+  2dsphere. Código y reporte pendientes de aprobación de commit.
+- Siguiente etapa: procesamiento y agregaciones mediante Spark.
 
-La asignación es una propuesta y no implica atribuir cambios a ninguno de los
-integrantes antes de que realmente los realice.
+## Distribución del trabajo por integrante
+
+- El usuario exige participación de ambos integrantes, tanto en infraestructura
+  como en el código del proyecto. Cada uno trabajará en su rama y conservará
+  la autoría real de los cambios que realice y revise.
+- Propuesta para Andres: MongoDB, Dask, volúmenes de ingesta y configuración
+  Compose correspondiente; descarga, limpieza, muestreo e instrumentación Dask.
+- Propuesta para Julian: configuración Spark y Flask, infraestructura Jenkins
+  para CI/CD; procesamiento Spark, consultas/API, Jenkinsfile e instrumentación Spark.
+- Integración y documentación: cada integrante documenta y valida su parte;
+  los cambios se revisan mediante pull requests hacia main.
+
+La distribución concreta sigue siendo una propuesta. La base de infraestructura
+desarrollada en esta sesión corresponde a Andres. No se cambiará la identidad
+Git a Julian para simular aportes: sus commits deberán reflejar su participación
+real. El usuario confirmó que Julian trabajará y revisará los cambios en este
+Mac; se confirmará la autoría antes de cada commit, además de su aprobación.
 
 ## Condiciones de la comparación
 

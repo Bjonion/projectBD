@@ -1,0 +1,22 @@
+.git
+.DS_Store
+.env
+.env.*
+!.env.example
+secrets
+.kaggle
+**/kaggle.json
+**/access_token
+**/*.pem
+**/*.key
+data
+volumes
+jenkins_home
+artifacts
+.venv
+venv
+**/__pycache__
+.pytest_cache
+Actividad_bigdata.md
+Actividad_bigdata.MD
+actividad Big Data.md
